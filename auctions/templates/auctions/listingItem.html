@@ -1,0 +1,12 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+{{details}}
+<h3>Created by:{{details.user.username}}</h3>
+
+
+{% for comment in comments %}
+<h3>{{comment}}</h3>
+{% endfor %}
+
+
+{% endblock %}
