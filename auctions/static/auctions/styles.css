@@ -1,3 +1,21 @@
 body {
     padding: 10px;
 }
+a{
+    display: block;
+    text-decoration: none;
+}
+img{
+    width: 100px;
+    height: 100px;
+}
+.mcard{
+    border: 1px solid blanchedalmond;
+    background: teal;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    text-decoration: none;
+    color: wheat;
+    display: flex;
+}

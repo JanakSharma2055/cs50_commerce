@@ -5,12 +5,17 @@
 <h2>Active Listings</h2>
 {% for listing in activeListings %}
 <a href="{% url 'listingItem' listing.id%}">
-    <h2>{{listing.title}}</h2>
-    <h3>{{listing.price}}</h3>
-    <h3>{{listing.description}}</h3>
-    {% endfor %}
-</a>
+    <div class="mcard">
+        <div>
+            <h2>{{listing.title}}</h2>
+            <h3>{{listing.price}}</h3>
+            <h3>{{listing.description}}</h3>
+        </div>
+        <img src="{{listing.img_url}}" alt="image">
 
+    </div>
+</a>
+{% endfor %}
 
 
 {% endblock %}

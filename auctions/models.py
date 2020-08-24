@@ -34,4 +34,6 @@ class Comment(models.Model):
     def __str__(self):
         return f"{self.commented_by.username}:{self.comment}"
 
-   
+class WatchList(models.Model):
+    added_by=models.ForeignKey(User ,on_delete=models.PROTECT,related_name="added_by")
+    added_item=models.ForeignKey(AuctionListings,on_delete=models.PROTECT,related_name="added_item")

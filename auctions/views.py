@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django import forms
 
-from .models import User,AuctionListings,Comment,Bid
+from .models import User,AuctionListings,Comment,Bid,WatchList
 
 #for creating new active listing
 class listingForm(forms.Form):
@@ -24,9 +24,42 @@ def index(request):
 
 def listingItem(request,item_id):
     item=AuctionListings.objects.get(pk=item_id)
+    try:
+        watchlist=WatchList.objects.get(added_item=item)
+        message="remove from watchlist"
+    except WatchList.DoesNotExist:
+        message="add to watchList"
+    
+    if request.method=="POST":
+        if request.POST["addOrRemove"]=="add to watchList":
+            watchListitem=WatchList(added_by=request.user,added_item=AuctionListings(pk=item_id))
+            watchListitem.save()
+            print(WatchList.objects.all())
+            return render(request,"auctions/listingItem.html",{
+               "details":item,
+                "comments":Comment.objects.filter(commented_on=item),
+                "message":"remove from watchlist"
+       
+
+                 })
+        elif request.POST["addOrRemove"]=="remove from watchlist":
+            WatchList.objects.filter(added_item=item).delete()
+            return render(request,"auctions/listingItem.html",{
+               "details":item,
+                "comments":Comment.objects.filter(commented_on=item),
+                "message":"add to watchList"
+       
+
+                 })
+
+
+
+
+
     return render(request,"auctions/listingItem.html",{
         "details":item,
-        "comments":Comment.objects.filter(commented_on=item)
+        "comments":Comment.objects.filter(commented_on=item),
+        "message":message
        
 
     })
@@ -53,6 +86,21 @@ def createListing(request):
     return render(request,"auctions/createListing.html",{
         "forms":listingForm()
     })
+
+
+
+def watchList(request):
+    items=WatchList.objects.filter(added_by=request.user)
+
+    return render(request,"auctions/watchList.html",{
+        "watchListItems":items
+    })
+
+
+    
+
+
+   
 
 
 

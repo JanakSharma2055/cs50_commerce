@@ -1,0 +1,23 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<h2>Watch List </h2>
+<h4>The items added to watch list should be displayed here</h4>
+{% for item in watchListItems %}
+<a href="{% url 'listingItem' item.added_item.id%}">
+    <div class="mcard">
+        <div>
+            <h2>{{item.added_item.title}}</h2>
+            <h3>{{item.added_item.price}}</h3>
+            <h3>{{item.added_item.description}}</h3>
+        </div>
+        <img src="{{item.added_item.img_url}}" alt="image">
+
+    </div>
+</a>
+{% endfor %}
+
+
+
+{% endblock %}

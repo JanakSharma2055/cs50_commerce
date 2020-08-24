@@ -1,7 +1,17 @@
 {% extends "auctions/layout.html" %}
 {% block body %}
 {{details}}
+<img src="{{details.img_url}}" alt="Image">
 <h3>Created by:{{details.user.username}}</h3>
+<h5>Created on:{{details.date}}</h5>
+{% if user.is_authenticated %}
+<form action="{% url 'listingItem' details.id%}" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="{{message}}"name="addOrRemove">
+</form>
+
+
+{% endif %}
 
 
 {% for comment in comments %}
