@@ -8,9 +8,20 @@
 <form action="{% url 'listingItem' details.id%}" method="POST">
     {% csrf_token %}
     <input type="submit" value="{{message}}"name="addOrRemove">
+
+
+
+    {% if has_bid%}
+    {{bid_message}}
+    
+    {%else%}
+    {{bid_message}}
+    <input type="number" required name="price" min="0" value="0" step=".01" placeholder="Bid amount">
+    <input type="submit"name="place_bid">
+    {% endif %}
+
 </form>
-
-
+<a href="{% url 'all_bids' details.id %}">All Bids</a>
 {% endif %}
 
 
