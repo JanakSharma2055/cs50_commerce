@@ -7,6 +7,11 @@
 {% if user.is_authenticated %}
 <form action="{% url 'listingItem' details.id%}" method="POST">
     {% csrf_token %}
+    {% if details.bid_active %}
+    {% if creator %}
+    
+    <input type="submit"name="cancel_bid"value="end_bid">
+    {% else%}
     <input type="submit" value="{{message}}"name="addOrRemove">
 
 
@@ -18,6 +23,10 @@
     {{bid_message}}
     <input type="number" required name="price" min="0" value="0" step=".01" placeholder="Bid amount">
     <input type="submit"name="place_bid">
+    {% endif %}
+    {% endif%}
+    {% else %}
+    <h1>This bid has been closed</h1>
     {% endif %}
 
 </form>
