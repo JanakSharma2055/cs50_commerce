@@ -2,11 +2,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django import forms
 from django.db.models import Max
+from django.contrib.auth.decorators import login_required
 
 from .models import User, AuctionListings, Comment, Bid, WatchList
+from django.contrib.auth.models import AnonymousUser
 
 # for creating new active listing
 
@@ -30,6 +32,7 @@ def index(request):
 
 def listingItem(request, item_id):
     listing_owner = False
+    message=""
     item = AuctionListings.objects.get(pk=item_id)
     bid_count = Bid.objects.count()
     print(f"bid_count:{bid_count}")
@@ -40,15 +43,25 @@ def listingItem(request, item_id):
         message = "remove from watchlist"
     except WatchList.DoesNotExist:
         message = "add to watchList"
+    
+    print(request.user)
+    #need to show data also during logged out time--------------------------------------------------
+    
+   
+    if request.user.is_authenticated:
+        if Bid.objects.filter(bid_by=request.user, bid_on=AuctionListings(pk=item_id)).count() != 0:
+            price = Bid.objects.get(bid_by=request.user,bid_on=item).price
+            bid_message = f"You have already bid for:{price}"
+            has_bid = True
+        else:
+            has_bid = False
+            bid_message = "You have no bid yet"
 
-    if Bid.objects.filter(bid_by=request.user, bid_on=AuctionListings(pk=item_id)).count() != 0:
-        price = Bid.objects.get(bid_by=request.user,bid_on=item).price
-        bid_message = f"You have already bid for:{price}"
-        has_bid = True
-    else:
-        has_bid = False
-        bid_message = "You have no bid yet"
 
+
+
+
+    
     if request.method == "POST":
         if 'addOrRemove' in request.POST:
             if request.POST["addOrRemove"] == "add to watchList":
@@ -97,8 +110,8 @@ def listingItem(request, item_id):
         "details": item,
         "comments": Comment.objects.filter(commented_on=item),
         "message": message,
-        "has_bid": has_bid,
-        "bid_message": bid_message,
+       
+        
         "creator": listing_owner
 
 
@@ -260,3 +273,14 @@ def allBids(request, item_id):
         "has_bid":has_bid,
         "has_winner": False
     })
+
+def Comments(request,item_id):
+    if request.method=="POST":
+        item_id=int(request.POST["item_id"])
+        
+        cmt=request.POST["comment"]
+        comment=Comment(comment=cmt,commented_by=request.user,commented_on=AuctionListings(pk=item_id))
+        comment.save()
+    url=reverse("listingItem",args=(item_id,))#here i was stuck for long time for not using args=(item_id,)
+    return HttpResponseRedirect(url)
+    #this redirect not working need to check later

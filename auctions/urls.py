@@ -10,7 +10,8 @@ urlpatterns = [
     path("<int:item_id>",views.listingItem,name="listingItem"),
     path("create_listing",views.createListing,name="create_listing"),
     path("watchList",views.watchList,name="watch_list"),
-    path("<int:item_id>/all_bids",views.allBids,name="all_bids")
+    path("<int:item_id>/all_bids",views.allBids,name="all_bids"),
+    path("<int:item_id>/comments",views.Comments,name="comments")
  
     
 ]
