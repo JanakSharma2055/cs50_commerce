@@ -6,6 +6,12 @@ class User(AbstractUser):
     pass
 
 
+class Category(models.Model):
+    name=models.CharField(default="none",blank=True,max_length=100)
+    def __str__(self):
+        return f"{self.name}"
+
+
 class AuctionListings(models.Model):
     title=models.CharField(max_length=100)
     price=models.FloatField()
@@ -15,6 +21,7 @@ class AuctionListings(models.Model):
     user=models.ForeignKey(User,on_delete=models.CASCADE,related_name="user")
     date=models.DateTimeField(auto_now_add=True)
     bid_active=models.BooleanField(default=True)
+    category=models.ManyToManyField(Category,blank=True,related_name="category")
     def __str__(self):
         return f"{self.title}\n {self.description}"
 
@@ -38,3 +45,4 @@ class Comment(models.Model):
 class WatchList(models.Model):
     added_by=models.ForeignKey(User ,on_delete=models.CASCADE,related_name="added_by")
     added_item=models.ForeignKey(AuctionListings,on_delete=models.CASCADE,related_name="added_item")
+

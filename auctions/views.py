@@ -7,7 +7,7 @@ from django import forms
 from django.db.models import Max
 from django.contrib.auth.decorators import login_required
 
-from .models import User, AuctionListings, Comment, Bid, WatchList
+from .models import User, AuctionListings, Comment, Bid, WatchList,Category
 from django.contrib.auth.models import AnonymousUser
 
 # for creating new active listing
@@ -25,8 +25,19 @@ class bidForm(forms.Form):
 
 
 def index(request):
+    if request.method=="POST":
+        value=request.POST
+        print(value)
+        return render(request,"auctions/index.html",{
+                "activeListings":AuctionListings.objects.filter(category=Category.objects.get(name=value["category"])),
+                 "categories":Category.objects.all()
+            })
+        
+            
+            
     return render(request, "auctions/index.html", {
-        "activeListings": AuctionListings.objects.all()
+        "activeListings": AuctionListings.objects.all(),
+        "categories":Category.objects.all()
     })
 
 
