@@ -1,23 +1,56 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+<div class="watchlist">
 
-<h2>Watch List </h2>
-<h4>The items added to watch list should be displayed here</h4>
-{% for item in watchListItems %}
-<a href="{% url 'listingItem' item.added_item.id%}">
-    <div class="mcard">
-        <div>
-            <h2>{{item.added_item.title}}</h2>
-            <h3>{{item.added_item.price}}</h3>
-            <h3>{{item.added_item.description}}</h3>
+    <h2>Watch List </h2>
+    <h4>The items added to watch list should be displayed here</h4>
+    <div class="card-deck">
+        {% for item in watchListItems %}
+
+
+        <div class="card col-md-4">
+            <img class="card-img-top" src="{{item.added_item.img_url}}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">{{item.added_item.title}}</h5>
+                <p class="card-text">{{item.added_item.description}}</p>
+                <h6 class="card-subtitle mb-2 text-muted">${{item.added_item.price}}</h6>
+
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-primary" href="{% url 'listingItem' item.added_item.id%}"">Check</a>
+            </div>
+
         </div>
-        <img src="{{item.added_item.img_url}}" alt="image">
 
+        
     </div>
-</a>
-{% endfor %}
+
+ {% endfor %}
 
 
 
 {% endblock %}
+</div>
+<!-- <div class=" card-deck ">
+    {% for listing in activeListings %}
+    <div class=" card col-md-4 ">
+
+
+        <img class=" card-img-top" src="{{listing.img_url}}" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">{{listing.title}}</h5>
+                        <p class="card-text">{{listing.description}}</p>
+                        <h6 class="card-subtitle mb-2 text-muted">{{listing.price}}</h6>
+
+                    </div>
+                    <div class="card-footer">
+                        <a class="btn btn-primary" href="{% url 'listingItem' listing.id%}">Check</a>
+                    </div>
+
+
+
+            </div>
+            {% endfor %}
+
+        </div> -->

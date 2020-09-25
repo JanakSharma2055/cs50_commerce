@@ -1,49 +1,106 @@
 {% extends "auctions/layout.html" %}
 {% block body %}
-{{details}}
-<img src="{{details.img_url}}" alt="Image">
-<h3>Created by:{{details.user.username}}</h3>
-<h5>Created on:{{details.date}}</h5>
-{% if user.is_authenticated %}
-<form action="{% url 'listingItem' details.id%}" method="POST">
-    {% csrf_token %}
-    {% if details.bid_active %}
-    {% if creator %}
-    
-    <input type="submit"name="cancel_bid"value="end_bid">
-    {% else%}
-    <input type="submit" value="{{message}}"name="addOrRemove">
+
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-sm-12 col-md-5">
+            <img src="{{details.img_url}}" alt="Image" class="img-display">
+            {% for cat in details.category.all %}
+
+            <span class="badge badge-dark">{{ cat }}</span>
+            {% endfor %}
+        </div>
+        <div class="col-md">
+            <h2>{{details.title}}</h2>
+            <p>{{details}}</p>
+            <h3 class="price">${{details.price}}</h3>
+            {% if creator %}
+            {% else %}
+            <h5>Created by:{{details.user.username}}</h5>
+            <h5>Created on:{{details.date}}</h5>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+            <form action="{% url 'listingItem' details.id%}" method="POST">
+                {% csrf_token %}
+                {% if details.bid_active %}
+                {% if creator %}
+                <a class="btn btn-dark" href="{% url 'all_bids' details.id %}">All Bids</a>
+
+
+                <input class="btn btn-danger" type="submit" name="cancel_bid" value="end bid">
+                {% else%}
+                <input class="btn btn-dark" type="submit" value="{{message}}" name="addOrRemove">
+                <a class="btn btn-dark" href="{% url 'all_bids' details.id %}">All Bids</a>
+                <br>
 
 
 
-    {% if has_bid%}
-    {{bid_message}}
-    
-    {%else%}
-    {{bid_message}}
-    <input type="number" required name="price" min="0" value="0" step=".01" placeholder="Bid amount">
-    <input type="submit"name="place_bid">
-    {% endif %}
-    {% endif%}
-    {% else %}
-    <h1>This bid has been closed</h1>
-    {% endif %}
+                {% if has_bid%}
+                {{bid_message}}
 
-</form>
-<a href="{% url 'all_bids' details.id %}">All Bids</a>
+                {%else%}
+
+                <div class=" mt-2 mb-2 form-row ">
+                    <div class="col">
+                        <input type="number" class="form-control" required name="price" min="0"  step=".01" value="0"
+                            placeholder="place bid">
+                    </div>
+                    <div class="col">
+                        <input type="submit" class="btn btn-success" name="place_bid" value="Bid">
+                    </div>
+                </div>
+                {% if bid_message%}
+                <div class="alert bg-info">{{bid_message}}</div>
+                {% endif %}
+
+                {% endif %}
+                {% endif%}
+                {% else %}
+                <a class="btn btn-dark" href="{% url 'all_bids' details.id %}">All Bids</a>
 
 
-<form action="{% url 'comments' details.id %}"method="POST">
-    {%csrf_token%}
-    <input type="hidden"value="{{details.id}}"name="item_id">
-    <input type="text"name="comment"placeholder="comment">
-    <input type="submit"name="submit_cmt">
-</form>
-{% endif %}
+                <h3>This bid has been closed</h3>
+                {% endif %}
 
-{% for comment in comments %}
-<h3>{{comment}}</h3>
-{% endfor %}
 
+            </form>
+
+
+
+        </div>
+
+    </div>
+    <div class="mt-5">
+        <form action="{% url 'comments' details.id %}" method="POST">
+            {%csrf_token%}
+            <input type="hidden" value="{{details.id}}" name="item_id">
+            <!-- <input type="text" name="comment" placeholder="comment">
+         -->
+            <div class="form-group">
+                <label for="comment" class="cmt-label">
+                    <h2>Comment:</h2>
+                </label>
+                <textarea class="form-control comment-box" rows="3" id="comment" name="comment"></textarea>
+            </div>
+            <input class="btn btn-dark" type="submit" name="submit_cmt" value="comment">
+        </form>
+        {% endif %}
+        <div class="comments">
+            {% for comment in comments %}
+            <div class="comment">
+                <h3>{{comment.commented_by}}</h3>
+                <h6 class="comment-time">{{comment.whenpublished}}</h6>
+                <p>{{comment}}</p>
+               
+            </div>
+            
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
 
 {% endblock %}

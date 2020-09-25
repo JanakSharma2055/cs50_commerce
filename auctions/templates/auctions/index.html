@@ -2,43 +2,64 @@
 
 {% block body %}
 
-<h2>Active Listings</h2>
-<form action="{% url 'index'%}" method="POST">
-    {% csrf_token %}
-    <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
-            Categories
-        </button>
-
-        <div class="dropdown-menu" aria-labelledby="Categories">
-            {% for category in categories %}
-
-            <button type="submit" class='dropdown-item' name="category" value="{{category.name}}">
-                {{category.name}}
+<div class="listing-header">
+    <h2>Active Listings</h2>
+</div>
+<div class="category-select mb-2">
+    <form action="{% url 'index'%}" method="POST">
+        {% csrf_token %}
+        <div class="dropdown ">
+            <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                Categories
             </button>
 
+            <div class="dropdown-menu" aria-labelledby="Categories">
+                {% for category in categories %}
 
-            {% endfor %}
+                <button type="submit" class='dropdown-item' name="category" value="{{category.name}}">
+                    {{category.name}}
+                </button>
+
+
+                {% endfor %}
+
+
+            </div>
+
+        </div>
+    </form>
+</div>
+<div class="card-wrapper">
+    <div class="row m-auto">
+        {% for listing in activeListings %}
+        <div class="card col-md-3 m-3 ">
+
+
+            <img class="card-img-top" src="{{listing.img_url}}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">{{listing.title}}</h5>
+                <p class="card-text">{{listing.description}}</p>
+                <h5 class="card-subtitle mb-2 price ">${{listing.price}}</h6>
+
+                    {% for cat in listing.category.all %}
+
+                    <span class="badge badge-dark">{{ cat }}</span>
+                    {% endfor %}
+
+
+            </div>
+            <div class="card-footer">
+                <a class="btn btn-primary" href="{% url 'listingItem' listing.id%}">Check</a>
+            </div>
+
 
 
         </div>
+        {% endfor %}
 
     </div>
-</form>
-{% for listing in activeListings %}
-<a href="{% url 'listingItem' listing.id%}">
-    <div class="mcard">
-        <div>
-            <h2>{{listing.title}}</h2>
-            <h3>{{listing.price}}</h3>
-            <h3>{{listing.description}}</h3>
-        </div>
-        <img src="{{listing.img_url}}" alt="image">
-
-    </div>
-</a>
-{% endfor %}
+</div>
 
 
 {% endblock %}

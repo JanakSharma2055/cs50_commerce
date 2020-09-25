@@ -1,5 +1,9 @@
 body {
-    padding: 10px;
+    margin-top: 0;
+    padding: 0;
+    background-color: #637373;
+    
+
 }
 a{
     display: block;
@@ -9,13 +13,114 @@ img{
     width: 100px;
     height: 100px;
 }
-.mcard{
-    border: 1px solid blanchedalmond;
-    background: teal;
-    border-radius: 10px;
+p{
+    font-size: 20px;
+}
+
+/* changing bootstrap classes here------------------- */
+.card{
+     
+    background-color:#679B9B; 
+   
+}
+
+.card-img-top {
+    max-height: 200px;
+    min-height: 200px;
+    object-fit: cover;
+}
+.card-text{
+    overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   font-size:16px;
+   -webkit-line-clamp: 2; /* number of lines to show */
+   -webkit-box-orient: vertical;
+}
+.card-wrapper{
+    width: 80%;
+    margin: auto;
+}
+.nav-link {
+    padding-right: .5rem !important;
+    padding-left: .5rem !important;
+  }
+ 
+ 
+  /* ---------------------------------------------- */
+  
+.category-select{
+    text-align: end;
+    
+    width: 75%;
+    margin: auto;
+}
+.my-form{
+    width: 60%;
+    margin: auto;
+}
+.form-login{
+    width: 65%;
+    margin: auto;
+   
+}
+.img-display{
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+}
+.comments{
+    width: 75%;
+   border: 1px solid black;
+   margin: 10px;
+   
+}
+.comment{
+    background-color:rgb(35, 97, 116);
+    margin-bottom: 3px;
     padding: 10px;
-    margin: 10px;
-    text-decoration: none;
-    color: wheat;
-    display: flex;
+
+}
+.comment h3{
+    display: inline-block;
+}
+.comment h6{
+    display: inline-block;
+}
+.comment p{
+    color: rgb(233, 198, 59);
+}
+
+.comment-time{
+    margin-left: 5px;
+    
+    
+}
+.comment-box{
+    width: 75%;
+}
+.sign-status{
+    padding: 2px;
+    background-color: darkgray;
+    text-align: center;
+    padding: 5px;
+    font-size: 25px;
+    
+
+}
+.listing-header{
+    width: 75%;
+    margin: auto;
+    text-align: center;
+}
+.watchlist{
+    width: 75%;
+    margin: auto;
+}
+.price{
+    color: #821752;
+}
+.all-bids{
+    width: 60%;
+    margin: auto;
 }

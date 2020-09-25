@@ -14,10 +14,32 @@ from django.contrib.auth.models import AnonymousUser
 
 
 class listingForm(forms.Form):
-    title = forms.CharField(label="title")
-    price = forms.FloatField(label="price")
-    img_url = forms.URLField(label="image Url")
-    description = forms.CharField(widget=forms.Textarea())
+    categories=Category.objects.all()
+    CHOICES=[]
+    #dropdown for choices
+    for item in categories:
+        CHOICES.append((item.name,item.name))
+        
+   
+    title = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+    price = forms.FloatField(label="price",widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+    img_url = forms.URLField(label="image Url",widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+        }
+    ))
+    description = forms.CharField(widget=forms.Textarea(attrs={
+        'class':'form-control'
+    }))
+    category=forms.CharField(label="category", widget=forms.Select(choices=CHOICES))
 
 
 class bidForm(forms.Form):
@@ -137,11 +159,17 @@ def createListing(request):
             mprice = form.cleaned_data["price"]
             mimg_url = form.cleaned_data["img_url"]
             mdescription = form.cleaned_data["description"]
-
+            mcategory=form.cleaned_data["category"]
+            cat_obj=Category.objects.get(name=mcategory)
             # creating new auction int auctionListing table
             new_listing = AuctionListings(
                 title=mtitle, price=mprice, img_url=mimg_url, description=mdescription, user=request.user)
+            
+            
+            
             new_listing.save()
+            new_listing.category.add(cat_obj)
+
             return HttpResponseRedirect(reverse('index'))
         else:
             return render(request, 'auctions/createListing.html', {

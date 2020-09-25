@@ -1,30 +1,53 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-{% if has_bid %}
-{% for bid in bids %}
-
-<h3>Name:{{bid.bid_by.username}}</h3>
-<h4>price:{{bid.price}}</h4>
+<div class="all-bids">
+    {% if has_bid %}
 
 
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+
+                <th scope="col">UserName</th>
+                <th scope="col">Price</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for bid in bids %}
+            <tr>
+
+                <td>
+                    <h3>{{bid.bid_by.username}}</h3>
+                </td>
+                <td>
+                    <h3>${{bid.price}}</h3>
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+
+    </table>
 
 
 
 
-{% endfor %}
-{% if has_winner %}
-{% if you_won%}
-<h1>Congrats! You won the bid</h1>
-{% else %}
-<h1>{{winner.bid_by}} has won the bid</h1>
-{% endif %}
-{% endif %}
-{% else %}
-<h1>No bids </h1>
-{% endif %}
+
+    {% if has_winner %}
+    {% if you_won%}
+    <h1>Congrats! You won the bid</h1>
+    {% else %}
+    <h1>{{winner.bid_by}} has won the bid</h1>
+    {% endif %}
+    {% endif %}
+    {% else %}
+    <h1>No bids </h1>
+    {% endif %}
 
 
-    
+</div>
 
 {% endblock %}
