@@ -2,7 +2,7 @@
 
 Welcome to CS50 Commerce! This project is a Django-based e-commerce platform developed as part of the CS50 Web Programming with Python and JavaScript course.
 
-**[Click to see the demo]([https://example.com](https://www.youtube.com/watch?v=jq3OMQdIr40))**
+**([Click for demo](https://www.youtube.com/watch?v=jq3OMQdIr40))**
 
 ## Installation
 
@@ -10,7 +10,7 @@ To set up this project locally, follow these steps:
 
 1. Clone the repository:
     ```
-    git clone https://github.com/your-username/cs50_commerce.git
+    git clone https://github.com/JanakSharma2055/cs50_commerce.git
     ```
 
 2. Navigate to the project directory:
